@@ -57,8 +57,8 @@ function Sidebar() {
    <div className="sidebar__profile">
        <Avatar/>
        <div className="sidebar__profileInfo">
-           <h3>sssssangha</h3>
-           <p>#this is my ID</p>
+           <h3>mehedi</h3>
+           <p>#363421</p>
        </div>
        <div className="sidebar__profileIcons">
            <MicIcon/>
