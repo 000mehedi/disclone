@@ -1,5 +1,6 @@
 import React from 'react'
 import './Chat.css'
+import Message from './Message';
 import ChatHeader  from './ChatHeader'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
@@ -12,6 +13,8 @@ function Chat() {
    
         <ChatHeader/> 
         <div className="chat__messages">
+
+          <Message/>
           </div> 
         <div className="chat__input">
           <AddCircleIcon fontSize='large'/>
