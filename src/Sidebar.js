@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
@@ -11,9 +11,25 @@ import MicIcon from '@mui/icons-material/Mic';
 import Avatar from '@mui/material/Avatar';
 import HeadsetIcon from '@mui/icons-material/Headset';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useSelector } from 'react-redux';
+import { selectUser } from './features/counter/userSlice';
+import db, { auth } from './firebase';
 
 
 function Sidebar() {
+    const user = useSelector(selectUser);
+    const [channels, setChannels] = useState([]);
+
+
+    useEffect(() =>{
+        db.collection('channels').onSnapshot(snapshot =>(
+           setChannels(snapshot.docs.map(doc =>({
+               id: doc.id,
+               channel: doc.data(),
+           }))) 
+        ))
+    }, [])
+
   return (
     <div className='sidebar'>
 
@@ -33,10 +49,11 @@ function Sidebar() {
             <AddIcon className="sidebar__addChannel"/>
         </div>
         <div className="sidebar__channelsList">
-        <SidebarChannel/>
-        <SidebarChannel/>
-        <SidebarChannel/>
-        <SidebarChannel/>
+            {channels.map((channel)=>(
+      <SidebarChannel/>
+            ))}
+  
+   
     </div>
     </div>
     <div className="sidebar__voice">
@@ -55,10 +72,10 @@ function Sidebar() {
         </div>
     </div>
    <div className="sidebar__profile">
-       <Avatar/>
+       <Avatar onClick = {() => auth.signOut()}   src ={user.photo}/>
        <div className="sidebar__profileInfo">
-           <h3>mehedi</h3>
-           <p>#363421</p>
+           <h3>{user.displayName}</h3>
+           <p>#{user.uid.substring(0,5)}</p>
        </div>
        <div className="sidebar__profileIcons">
            <MicIcon/>
