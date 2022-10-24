@@ -24,11 +24,22 @@ function Sidebar() {
     useEffect(() =>{
         db.collection('channels').onSnapshot(snapshot =>(
            setChannels(snapshot.docs.map(doc =>({
-               id: doc.id,
+               id: doc.id,  
                channel: doc.data(),
            }))) 
         ))
-    }, [])
+    }, []);
+
+    const handleAddChannel = ()=>{
+          const channelName = prompt('Enter a new channel Name: ')
+          if (channelName){
+              db.collection("channels").add({
+                  channelName: channelName,
+              });
+          }
+
+
+    };
 
   return (
     <div className='sidebar'>
@@ -46,11 +57,15 @@ function Sidebar() {
                 <h4>Text Channels</h4>
             </div>
 
-            <AddIcon className="sidebar__addChannel"/>
+            <AddIcon onClick = {handleAddChannel} className="sidebar__addChannel"/>
         </div>
         <div className="sidebar__channelsList">
-            {channels.map((channel)=>(
-      <SidebarChannel/>
+            {channels.map(({id, channel})=>(
+      <SidebarChannel 
+      key={id}
+      id = {id}
+      channelName = {channel.channelName}
+      />
             ))}
   
    
